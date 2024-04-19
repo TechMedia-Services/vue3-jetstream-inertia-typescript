@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
@@ -8,10 +8,11 @@ import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { Session } from "@/Types";
 
-defineProps({
-    sessions: Array,
-});
+defineProps<{
+    sessions: Session[];
+}>();
 
 const confirmingLogout = ref(false);
 const passwordInput = ref(null);
@@ -23,14 +24,16 @@ const form = useForm({
 const confirmLogout = () => {
     confirmingLogout.value = true;
 
-    setTimeout(() => passwordInput.value.focus(), 250);
+    // @ts-ignore
+    setTimeout(() => passwordInput.value?.focus(), 250);
 };
 
 const logoutOtherBrowserSessions = () => {
     form.delete(route('other-browser-sessions.destroy'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
+        // @ts-ignore
+        onError: () => passwordInput.value?.focus(),
         onFinish: () => form.reset(),
     });
 };

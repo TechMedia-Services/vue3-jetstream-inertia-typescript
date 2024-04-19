@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
@@ -8,12 +8,13 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 
-defineProps({
-    title: String,
-});
+defineProps<{
+    title: string;
+}>();
 
 const showingNavigationDropdown = ref(false);
 
+// @ts-ignore
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
@@ -78,6 +79,7 @@ const logout = () => {
                                             </div>
 
                                             <!-- Team Settings -->
+                                            <!-- @vue-ignore -->
                                             <DropdownLink :href="route('teams.show', $page.props.auth.user.current_team)">
                                                 Team Settings
                                             </DropdownLink>
@@ -96,6 +98,7 @@ const logout = () => {
 
                                                 <template v-for="team in $page.props.auth.user.all_teams" :key="team.id">
                                                     <form @submit.prevent="switchToTeam(team)">
+                                                        <!-- @vue-ignore -->
                                                         <DropdownLink as="button">
                                                             <div class="flex items-center">
                                                                 <svg v-if="team.id == $page.props.auth.user.current_team_id" class="me-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -238,6 +241,7 @@ const logout = () => {
                                 </div>
 
                                 <!-- Team Settings -->
+                                <!-- @vue-ignore -->
                                 <ResponsiveNavLink :href="route('teams.show', $page.props.auth.user.current_team)" :active="route().current('teams.show')">
                                     Team Settings
                                 </ResponsiveNavLink>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
@@ -13,22 +13,23 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { Team, AvailableRoles, Permissions } from "@/Types";
 
-const props = defineProps({
-    team: Object,
-    availableRoles: Array,
-    userPermissions: Object,
-});
+const props = defineProps<{
+    team: Team;
+    availableRoles: AvailableRoles[];
+    userPermissions: Permissions;
+}>();
 
 const page = usePage();
 
 const addTeamMemberForm = useForm({
     email: '',
-    role: null,
+    role: '',
 });
 
 const updateRoleForm = useForm({
-    role: null,
+    role: '',
 });
 
 const leaveTeamForm = useForm({});
@@ -40,6 +41,7 @@ const confirmingLeavingTeam = ref(false);
 const teamMemberBeingRemoved = ref(null);
 
 const addTeamMember = () => {
+    // @ts-ignore
     addTeamMemberForm.post(route('team-members.store', props.team), {
         errorBag: 'addTeamMember',
         preserveScroll: true,
@@ -47,12 +49,13 @@ const addTeamMember = () => {
     });
 };
 
-const cancelTeamInvitation = (invitation) => {
+const cancelTeamInvitation = (invitation: { id: number }) => {
     router.delete(route('team-invitations.destroy', invitation), {
         preserveScroll: true,
     });
 };
 
+// @ts-ignore
 const manageRole = (teamMember) => {
     managingRoleFor.value = teamMember;
     updateRoleForm.role = teamMember.membership.role;
@@ -74,6 +77,7 @@ const leaveTeam = () => {
     leaveTeamForm.delete(route('team-members.destroy', [props.team, page.props.auth.user]));
 };
 
+// @ts-ignore
 const confirmTeamMemberRemoval = (teamMember) => {
     teamMemberBeingRemoved.value = teamMember;
 };
@@ -87,8 +91,10 @@ const removeTeamMember = () => {
     });
 };
 
+// @ts-ignore
 const displayableRole = (role) => {
-    return props.availableRoles.find(r => r.key === role).name;
+    // @ts-ignore
+    return props?.availableRoles.find(r => r.key === role).name;
 };
 </script>
 
@@ -242,11 +248,11 @@ const displayableRole = (role) => {
                                     class="ms-2 text-sm text-gray-400 underline"
                                     @click="manageRole(user)"
                                 >
-                                    {{ displayableRole(user.membership.role) }}
+                                    {{ displayableRole(user.membership?.role) }}
                                 </button>
 
                                 <div v-else-if="availableRoles.length" class="ms-2 text-sm text-gray-400">
-                                    {{ displayableRole(user.membership.role) }}
+                                    {{ displayableRole(user.membership?.role) }}
                                 </div>
 
                                 <!-- Leave Team -->
@@ -355,6 +361,7 @@ const displayableRole = (role) => {
         </ConfirmationModal>
 
         <!-- Remove Team Member Confirmation Modal -->
+        <!-- @vue-ignore -->
         <ConfirmationModal :show="teamMemberBeingRemoved" @close="teamMemberBeingRemoved = null">
             <template #title>
                 Remove Team Member

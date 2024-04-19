@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import SectionTitle from './SectionTitle.vue';
 </script>
 

@@ -1,15 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';
 import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager.vue';
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm.vue';
+import { Team, Permissions, AvailableRoles } from "@/Types";
 
-defineProps({
-    team: Object,
-    availableRoles: Array,
-    permissions: Object,
-});
+defineProps<{
+    team: Team;
+    permissions: Permissions;
+    availableRoles: AvailableRoles[];
+}>();
 </script>
 
 <template>

@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue';
 import DialogModal from './DialogModal.vue';
 import InputError from './InputError.vue';
 import PrimaryButton from './PrimaryButton.vue';
 import SecondaryButton from './SecondaryButton.vue';
 import TextInput from './TextInput.vue';
+import axios from 'axios';
 
 const emit = defineEmits(['confirmed']);
 
@@ -40,7 +41,8 @@ const startConfirmingPassword = () => {
         } else {
             confirmingPassword.value = true;
 
-            setTimeout(() => passwordInput.value.focus(), 250);
+            // @ts-ignore
+            setTimeout(() => passwordInput.value?.focus(), 250);
         }
     });
 };
@@ -59,7 +61,8 @@ const confirmPassword = () => {
     }).catch(error => {
         form.processing = false;
         form.error = error.response.data.errors.password[0];
-        passwordInput.value.focus();
+        // @ts-ignore
+        passwordInput.value?.focus();
     });
 };
 
