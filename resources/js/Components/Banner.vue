@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
@@ -8,7 +8,9 @@ const style = ref('success');
 const message = ref('');
 
 watchEffect(async () => {
+    // @ts-ignore
     style.value = page.props.jetstream.flash?.bannerStyle || 'success';
+    // @ts-ignore
     message.value = page.props.jetstream.flash?.banner || '';
     show.value = true;
 });

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
@@ -8,10 +8,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { User } from "@/Types";
 
-const props = defineProps({
-    user: Object,
-});
+const props = defineProps<{
+    user: User;
+}>();
 
 const form = useForm({
     _method: 'PUT',
@@ -20,12 +21,13 @@ const form = useForm({
     photo: null,
 });
 
-const verificationLinkSent = ref(null);
+const verificationLinkSent = ref(false);
 const photoPreview = ref(null);
 const photoInput = ref(null);
 
 const updateProfileInformation = () => {
     if (photoInput.value) {
+        // @ts-ignore
         form.photo = photoInput.value.files[0];
     }
 
@@ -41,10 +43,12 @@ const sendEmailVerification = () => {
 };
 
 const selectNewPhoto = () => {
-    photoInput.value.click();
+    // @ts-ignore
+    photoInput.value?.click();
 };
 
 const updatePhotoPreview = () => {
+    // @ts-ignore
     const photo = photoInput.value.files[0];
 
     if (! photo) return;
@@ -52,6 +56,7 @@ const updatePhotoPreview = () => {
     const reader = new FileReader();
 
     reader.onload = (e) => {
+        // @ts-ignore
         photoPreview.value = e.target.result;
     };
 
@@ -69,7 +74,9 @@ const deletePhoto = () => {
 };
 
 const clearPhotoFileInput = () => {
+    // @ts-ignore
     if (photoInput.value?.value) {
+        // @ts-ignore
         photoInput.value.value = null;
     }
 };

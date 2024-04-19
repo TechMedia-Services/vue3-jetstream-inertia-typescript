@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { nextTick, ref } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
@@ -19,15 +19,18 @@ const recoveryCodeInput = ref(null);
 const codeInput = ref(null);
 
 const toggleRecovery = async () => {
+    // @ts-ignore
     recovery.value ^= true;
 
     await nextTick();
 
     if (recovery.value) {
-        recoveryCodeInput.value.focus();
+        // @ts-ignore
+        recoveryCodeInput.value?.focus();
         form.code = '';
     } else {
-        codeInput.value.focus();
+        // @ts-ignore
+        codeInput.value?.focus();
         form.recovery_code = '';
     }
 };

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import ActionSection from '@/Components/ActionSection.vue';
@@ -9,10 +9,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import axios from 'axios';
 
-const props = defineProps({
-    requiresConfirmation: Boolean,
-});
+const props = defineProps<{
+    requiresConfirmation: boolean;
+}>();
 
 const page = usePage();
 const enabling = ref(false);

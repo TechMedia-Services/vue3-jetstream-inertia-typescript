@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import FormSection from '@/Components/FormSection.vue';
@@ -6,17 +6,19 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { Team, Permissions } from "@/Types";
 
-const props = defineProps({
-    team: Object,
-    permissions: Object,
-});
+const props = defineProps<{
+    team: Team;
+    permissions: Permissions;
+}>();
 
 const form = useForm({
     name: props.team.name,
 });
 
 const updateTeamName = () => {
+    // @ts-ignore
     form.put(route('teams.update', props.team), {
         errorBag: 'updateTeamName',
         preserveScroll: true,
